@@ -4,6 +4,7 @@ public class DrawMap
 	final int BASE_OUTSIDE_VIEW_RANGE = 100;
 	private int torchStrength = 0;
 	boolean [][] visited;
+	boolean TorchMode = false;
 	
 	public void setDrawMap(){
 		boolean[][] visited = new boolean[50][50];
@@ -34,6 +35,7 @@ public class DrawMap
 						// Add more Tiles here.
 						
 						case HERO : x = x + 'H'; break;
+						case TRADER : x = x + 'T'; break;
 						
 						case WALL : x = x + '+'; break;
 						case EDGE : x = x + '+'; break;

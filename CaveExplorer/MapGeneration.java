@@ -29,6 +29,7 @@ public class MapGeneration{
 		map = generateExit(map);
 		map = generateMonsters(map);
 		map = generateChests(map);
+		map = generateTraders(map);
 		return map;
 	}
 	
@@ -72,7 +73,7 @@ public class MapGeneration{
 			}
 		}
 		
-		for(int k =0; k<175; k++){
+		for(int k =0; k<200; k++){
 			int width = rand.nextInt(3)+2;
 			int height = rand.nextInt(3)+2;
 			int xpos = rand.nextInt(45)+2;
@@ -97,7 +98,7 @@ public class MapGeneration{
 						map[i][j] = Tiles.CORRIDOR;
 					}
 				} else if(map[i][j] == Tiles.CORRIDOR){
-					if (change == 0){
+					if (change == 50){
 						map[i][j] = Tiles.WALL;
 					}
 				}
@@ -118,8 +119,8 @@ public class MapGeneration{
 			monsterCounter = 10 + (floor*5);
 			for (int goblinCounter = 0; goblinCounter < monsterCounter-1; goblinCounter++){
 				while(true){
-					int r_Row = rand.nextInt(48)+1;
-					int r_Col = rand.nextInt(48)+1;
+					int r_Row = rand.nextInt(46)+2;
+					int r_Col = rand.nextInt(46)+2;
 					if  (map[r_Row][r_Col] == Tiles.CORRIDOR){
 						map[r_Row][r_Col]= Tiles.GOBLIN;
 						break;
@@ -127,13 +128,14 @@ public class MapGeneration{
 				}
 			}
 		}
-		
+		System.out.println(floor);
 		if ((floor >= 2) && (floor < 10)){
+			System.out.println("Here2");
 			monsterCounter = (floor);
 			for (int ghostCounter = 0; ghostCounter < monsterCounter-1; ghostCounter++){
 				while(true){
-					int r_Row = rand.nextInt(48)+1;
-					int r_Col = rand.nextInt(48)+1;
+					r_Row = rand.nextInt(46)+2;
+					r_Col = rand.nextInt(46)+2;
 					if  (map[r_Row][r_Col] == Tiles.CORRIDOR){
 						map[r_Row][r_Col]= Tiles.GHOST;
 						break;
@@ -146,8 +148,8 @@ public class MapGeneration{
 			monsterCounter = 7 + (floor*5);
 			for (int spiderCounter = 0; spiderCounter < monsterCounter-1; spiderCounter++){
 				while(true){
-					int r_Row = rand.nextInt(48)+1;
-					int r_Col = rand.nextInt(48)+1;
+					r_Row = rand.nextInt(46)+2;
+					r_Col = rand.nextInt(46)+2;
 					if  (map[r_Row][r_Col] == Tiles.CORRIDOR){
 						map[r_Row][r_Col]= Tiles.SPIDER;
 						break;
@@ -160,8 +162,8 @@ public class MapGeneration{
 			monsterCounter = (floor - 5) * 3;
 			for (int trollCounter = 0; trollCounter < monsterCounter-1; trollCounter++){
 				while(true){
-					int r_Row = rand.nextInt(48)+1;
-					int r_Col = rand.nextInt(48)+1;
+					int r_Row = rand.nextInt(46)+2;
+					int r_Col = rand.nextInt(46)+2;
 					if  (map[r_Row][r_Col] == Tiles.CORRIDOR){
 						map[r_Row][r_Col] = Tiles.TROLL; 
 						break;
@@ -222,7 +224,17 @@ public class MapGeneration{
 			}
 		}return map;
 	}
-
+	
+	public Tiles[][] generateTraders(Tiles[][] map){
+		while(true){
+			int r_Row = rand.nextInt(46)+2;
+			int r_Col = rand.nextInt(46)+2;
+			if((map[r_Row][r_Col] == Tiles.WALL)&&(map[r_Row+1][r_Col] == Tiles.CORRIDOR)){
+				map[r_Row][r_Col] = Tiles.TRADER;
+				return map;
+			}
+		}
+	}
 	
 	// Returns total number of monsters
 	public int getMonsterTotal(){return monsterTotal;}
