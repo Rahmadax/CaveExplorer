@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class CoreClass
 {
+	public Random rand = new Random();
+	
 	private Tiles[][] map;
 
 	private char x;
@@ -19,6 +21,10 @@ public class CoreClass
 	private int heroCol;
 	private int floor = 1;
 	private int EXP = 0;
+	private int pickaxe = 2;
+	private String quality;
+	private String message;
+	private String currentMessage;
 	
 	private String weapon = "Fists";
 	int torchStrength = 0;
@@ -54,9 +60,29 @@ public class CoreClass
 		int z = 0;
 		
 		// Information displayed to the player here:
-		System.out.print("Gold: " + getGold() + "     ");
-		System.out.print("EXP: " + getEXP() + "     ");
-		System.out.println("Weapon: " + getWeapon());
+		System.out.print("Gold: " + getGold() + "   ");
+		System.out.print("EXP: " + getEXP() + "   ");
+		System.out.print("Weapon: " + getWeapon() + "   ");
+		pickaxe = getPickaxe();
+		if (pickaxe > 0){
+			if (pickaxe == 4){
+				quality = "Perfect";
+			} else if (pickaxe == 3){
+				quality = "Fine";
+			} else if (pickaxe == 2){
+				quality = "Damaged";
+			} else if (pickaxe == 1){
+				quality = "Very Damaged";
+			}
+			System.out.println("Pickaxe: " + quality + "\n");
+		} else { System.out.println("\n");
+		}
+		message = getMessage();
+		if (message != "blank"){
+			System.out.println(message);
+			resetMessage();
+		}
+		
 		
 		
 		
@@ -76,27 +102,34 @@ public class CoreClass
 				case 's': a =  1; b =  2; break;
 				case 'd': c =  1; d =  2; break;
 				} 
-				if (map[heroRow+a][heroCol+c] == Tiles.WALL){
-					if (map[heroRow+b][heroCol+d] == Tiles.WALL){
+				if ((map[heroRow+a][heroCol+c] == Tiles.WALL) || (map[heroRow+a][heroCol+c] == Tiles.EDGE)){
+					if ((map[heroRow+b][heroCol+d] == Tiles.WALL) || (map[heroRow+b][heroCol+d] == Tiles.EDGE)){
 						a = 0;
 					} else if (map[heroRow+b][heroCol+d] == Tiles.TROLL){
 						map[heroRow+b][heroCol+d] = Tiles.BODY;
 					} else if (map[heroRow+b][heroCol+d] == Tiles.EXIT){
 						a = 0;
 					} else {
-						map[heroRow][heroCol] = Tiles.CORRIDOR;
-						map[heroRow+a][heroCol+c] = Tiles.HERO;
-						map[heroRow+b][heroCol+d] = Tiles.WALL;
-						}
+						pickaxe = getPickaxe();
+						if ((pickaxe > 0) && (map[heroCol+a][heroCol+c] == Tiles.EDGE)){
+							String currentMessage = ("This wall is too hard to break. \n");
+							setMessage(currentMessage);
+						} else if (pickaxe > 0){
+							map[heroRow+a][heroCol+c] = Tiles.CORRIDOR;
+							decrementPickaxe();
+						}  
+					}
 				/* Add new pickups, enemies etc here. 
 				} else if () {  */
-				} else if (map[heroRow+a][heroCol+c] == Tiles.BODY){
-					System.out.println("Eww... It's all over your shoes.");
-					map[heroRow+a][heroCol+c] = Tiles.HERO;
-					map[heroRow][heroCol] = Tiles.CORRIDOR;
+				
+				} else if (map[heroRow+a][heroCol+c] == Tiles.TRADER){
+					
+					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CORRIDOR){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
+					
+					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CHEST){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
@@ -104,8 +137,14 @@ public class CoreClass
 					int floor = getFloor();
 					int earnedGold = chest.getNewGold(floor);
 					setGold(earnedGold);
+					int randPick = rand.nextInt(4);
+					if (randPick == 0){
+						setPickaxe();
+					}
+					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.EXIT){
 					gameOver(Ending.WIN);
+					
 				} else { System.out.println("What did you do...?");
 				} 
 				
@@ -120,6 +159,11 @@ public class CoreClass
 			System.out.println("Waiting...");
 		} return (map);
 	}
+	
+	
+	
+	
+	
 	
 	
 	public void gameOver(Ending ending){	
@@ -145,6 +189,7 @@ public class CoreClass
 		resetFloor();	
 		resetTorchStrength();
 		resetGold();
+		resetPickaxe();
 		startGame();
 	}
 	
@@ -192,7 +237,7 @@ public class CoreClass
 	
 	// Returns Current Gold.
 	public int getGold(){return gold;}
-	
+
 	// Resets Gold to 0 
 	public void resetGold(){gold = 0;}
 	
@@ -201,7 +246,20 @@ public class CoreClass
 	
 	// Returns Current Weapon
 	public String getWeapon(){return weapon;}
+	
+	public int getPickaxe(){return pickaxe;}
+	
+	public void resetPickaxe(){pickaxe = 2;}
+	
+	public void setPickaxe(){pickaxe = 4;}
+	
+	public void decrementPickaxe(){pickaxe--;}
 		
+	public void setMessage(String currentMessage){message = currentMessage;}
+	
+	public String getMessage(){return message;}
+	
+	public void resetMessage(){message = "blank";}
 		
 		
 }
