@@ -1,6 +1,6 @@
 public class DrawMap
 {
-	final int BASE_CAVE_VIEW_RANGE = 4;
+	final int BASE_CAVE_VIEW_RANGE = 100;
 	final int BASE_OUTSIDE_VIEW_RANGE = 100;
 	private int torchStrength = 0;
 	boolean [][] visited;

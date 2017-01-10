@@ -65,8 +65,7 @@ public class MapGeneration{
 					}
 				}
 			}
-		}
-		return map;
+		} return map;
 	}		
 	
 	public Tiles[][] generateRealism(Tiles[][] map){
@@ -83,7 +82,7 @@ public class MapGeneration{
 					}
 				}
 			}
-		}	return map;
+		} return map;
 	}
 	
 	
@@ -93,6 +92,7 @@ public class MapGeneration{
 		int floor = Core1.getFloor();
 		setMonsterTotal(floor);
 		monsterTotal = getMonsterTotal();
+		System.out.println(floor);
 		
 		Tiles[] listMonsters = new Tiles[monsterTotal];
 		if ((floor >= 0) && (floor <= 4)){
@@ -108,7 +108,6 @@ public class MapGeneration{
 				}
 			}
 		}
-		System.out.println(floor);
 		if ((floor >= 2) && (floor < 10)){
 			monsterCounter = (floor);
 			for (int ghostCounter = 0; ghostCounter < monsterCounter-1; ghostCounter++){
@@ -160,8 +159,7 @@ public class MapGeneration{
 					break;
 				}
 			}			
-		} 
-	return map;
+		} return map;
 	}
 	
 	// Returns the number of monsters present on the current floor.
@@ -173,28 +171,10 @@ public class MapGeneration{
 		if (floor == 10){monsterTotal = monsterTotal + 1;}
 	}
 	
-	
-	// Randomly places the exit.
-	public Tiles[][] generateExit(Tiles[][] map){
-		while(true){
-			int r_Row = rand.nextInt(46)+2;
-			int r_Col = rand.nextInt(46)+2;
-			if ((map[r_Row+1][r_Col] != Tiles.WALL) && (map[r_Row-1][r_Col] != Tiles.WALL) &&
-			(map[r_Row][r_Col+1] != Tiles.WALL) && (map[r_Row][r_Col-1] != Tiles.WALL)){
-				if (map[r_Row][r_Col] == Tiles.CORRIDOR){
-					map[r_Row][r_Col] = Tiles.EXIT;
-					return map;
-				}
-			}
-		}
-	}
-	
 	// Randomly places the exit.
 	public Tiles[][] generateChests(Tiles[][] map){
 		int n = 0;
-		int noChests = rand.nextInt(8)+2;
-		System.out.println(noChests);
-		while (n < noChests){
+		while (n < (rand.nextInt(8)+2)){
 			int r_Row = rand.nextInt(46)+2;
 			int r_Col = rand.nextInt(46)+2;
 			if (map[r_Row][r_Col] == Tiles.CORRIDOR){
@@ -220,24 +200,39 @@ public class MapGeneration{
 	    ("   "+
 		 " H "+
 		 "   ");
-		int randRow = rand.nextInt(43)+5;
-		int randCol = rand.nextInt(43)+5;
+		int randRow = rand.nextInt(40)+5;
+		int randCol = rand.nextInt(40)+5;
 		for (i = 0; i < 3; i++){
 			for(j = 0; j < 3; j++){
 				switch(Spawn.charAt(n)){
 					case('#'):
-						map[i+randRow][j+randCol] = Tiles.WALL;
+						map[randRow+i][randCol+j] = Tiles.WALL;
 						break;
 					case(' '):
-						map[i+randRow][j+randCol] = Tiles.CORRIDOR;
+						map[randRow+i][randCol+j] = Tiles.CORRIDOR;
 						break;
 					case('H'):
-						map[i+randRow][j+randCol] = Tiles.HERO;
+						map[randRow+i][randCol+j] = Tiles.HERO;
 						break;
 				}
 				n++;
 			}
 		} return map;
+	}
+	
+	// Randomly places the exit.
+	public Tiles[][] generateExit(Tiles[][] map){
+		while(true){
+			int r_Row = rand.nextInt(46)+2;
+			int r_Col = rand.nextInt(46)+2;
+			if ((map[r_Row+1][r_Col] != Tiles.WALL) && (map[r_Row-1][r_Col] != Tiles.WALL) &&
+			(map[r_Row][r_Col+1] != Tiles.WALL) && (map[r_Row][r_Col-1] != Tiles.WALL)){
+				if (map[r_Row][r_Col] == Tiles.CORRIDOR){
+					map[r_Row][r_Col] = Tiles.EXIT;
+					return map;
+				}
+			}
+		}
 	}
 	
 	// Returns total number of monsters

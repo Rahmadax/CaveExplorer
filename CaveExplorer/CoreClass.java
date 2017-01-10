@@ -65,11 +65,11 @@ public class CoreClass
 		System.out.print("Weapon: " + getWeapon() + "   ");
 		pickaxe = getPickaxe();
 		if (pickaxe > 0){
-			if (pickaxe == 4){
+			if (pickaxe == 6){
 				quality = "Perfect";
-			} else if (pickaxe == 3){
-				quality = "Fine";
-			} else if (pickaxe == 2){
+			} else if ((pickaxe == 4)||(pickaxe == 5)){
+				quality = "Good";
+			} else if ((pickaxe == 2)||(pickaxe == 3)){
 				quality = "Damaged";
 			} else if (pickaxe == 1){
 				quality = "Very Damaged";
@@ -82,8 +82,6 @@ public class CoreClass
 			System.out.println(message);
 			resetMessage();
 		}
-		
-		
 		
 		
 		try{
@@ -137,8 +135,7 @@ public class CoreClass
 					int floor = getFloor();
 					int earnedGold = chest.getNewGold(floor);
 					setGold(earnedGold);
-					int randPick = rand.nextInt(4);
-					if (randPick == 0){
+					if (rand.nextInt(4) == 0){
 						setPickaxe();
 					}
 					
@@ -159,11 +156,6 @@ public class CoreClass
 			System.out.println("Waiting...");
 		} return (map);
 	}
-	
-	
-	
-	
-	
 	
 	
 	public void gameOver(Ending ending){	
@@ -229,7 +221,7 @@ public class CoreClass
 	// Returns mapRows.
 	public int getMapRows(){return mapRows;}
 	
-	// Returns mapCols
+	// Returns mapCols.
 	public int getMapCols(){return mapCols;}
 	
 	// Adds new gold to current gold.
@@ -238,21 +230,25 @@ public class CoreClass
 	// Returns Current Gold.
 	public int getGold(){return gold;}
 
-	// Resets Gold to 0 
+	// Resets Gold to 0.
 	public void resetGold(){gold = 0;}
 	
 	// Returns Current EXP.
 	public int getEXP(){return EXP;}
 	
-	// Returns Current Weapon
+	// Returns Current Weapon.
 	public String getWeapon(){return weapon;}
 	
+	// Returns Pickaxe value.
 	public int getPickaxe(){return pickaxe;}
 	
+	// Sets pickaxe to default value.(2)
 	public void resetPickaxe(){pickaxe = 2;}
 	
-	public void setPickaxe(){pickaxe = 4;}
+	// Sets pickaxe value to maximum.(6)
+	public void setPickaxe(){pickaxe = 6;}
 	
+	// Decrements pickaxe value.
 	public void decrementPickaxe(){pickaxe--;}
 		
 	public void setMessage(String currentMessage){message = currentMessage;}
