@@ -174,7 +174,7 @@ public class MapGeneration{
 	// Randomly places the exit.
 	public Tiles[][] generateChests(Tiles[][] map){
 		int n = 0;
-		while (n < (rand.nextInt(8)+2)){
+		while (n < (rand.nextInt(12)+2)){
 			int r_Row = rand.nextInt(46)+2;
 			int r_Col = rand.nextInt(46)+2;
 			if (map[r_Row][r_Col] == Tiles.CORRIDOR){

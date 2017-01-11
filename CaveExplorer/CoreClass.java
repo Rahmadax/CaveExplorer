@@ -23,8 +23,9 @@ public class CoreClass
 	private int EXP = 0;
 	private int pickaxe = 2;
 	private String quality;
-	private String message;
+	private String announcement;
 	private String currentMessage;
+	private boolean firstMove = true;
 	
 	private String weapon = "Fists";
 	int torchStrength = 0;
@@ -54,10 +55,10 @@ public class CoreClass
 	
 	// Gets user input (WASD) and returns the updated map.
 	public Tiles[][] getGameplay(Tiles[][] map){
+		
 		int[] heroMap = getHeroLocation(map);
 		int heroRow = heroMap[0];
 		int heroCol = heroMap[1];
-		int z = 0;
 		
 		// Information displayed to the player here:
 		System.out.print("Gold: " + getGold() + "   ");
@@ -74,13 +75,13 @@ public class CoreClass
 			} else if (pickaxe == 1){
 				quality = "Very Damaged";
 			}
-			System.out.println("Pickaxe: " + quality + "\n");
-		} else { System.out.println("\n");
+			System.out.println("Pickaxe: " + quality);
 		}
-		message = getMessage();
-		if (message != "blank"){
-			System.out.println(message);
-			resetMessage();
+		announcement = getMessage();
+		if (announcement != "blank"){
+			System.out.println(announcement + "\n");
+			announcement = "blank";
+		} else {System.out.println("\n");
 		}
 		
 		
@@ -89,10 +90,8 @@ public class CoreClass
 		    String userInput = sc.nextLine();
 			char direction = userInput.charAt(0);
 			if (direction == 'q'){
-				Ending ending = Ending.TRAPPED;
-				gameOver(ending);
-			}
-			if ((direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd')){
+				gameOver(Ending.TRAPPED);
+			} else if ((direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd')){
 				int a = 0; int b = 0; int c = 0; int d = 0;
 				switch (direction){
 				case 'w': a = -1; b = -2; break;
@@ -100,34 +99,19 @@ public class CoreClass
 				case 's': a =  1; b =  2; break;
 				case 'd': c =  1; d =  2; break;
 				} 
-				if ((map[heroRow+a][heroCol+c] == Tiles.WALL) || (map[heroRow+a][heroCol+c] == Tiles.EDGE)){
-					if ((map[heroRow+b][heroCol+d] == Tiles.WALL) || (map[heroRow+b][heroCol+d] == Tiles.EDGE)){
-						a = 0;
-					} else if (map[heroRow+b][heroCol+d] == Tiles.TROLL){
-						map[heroRow+b][heroCol+d] = Tiles.BODY;
-					} else if (map[heroRow+b][heroCol+d] == Tiles.EXIT){
-						a = 0;
-					} else {
-						pickaxe = getPickaxe();
-						if ((pickaxe > 0) && (map[heroCol+a][heroCol+c] == Tiles.EDGE)){
-							String currentMessage = ("This wall is too hard to break. \n");
-							setMessage(currentMessage);
-						} else if (pickaxe > 0){
-							map[heroRow+a][heroCol+c] = Tiles.CORRIDOR;
-							decrementPickaxe();
-						}  
+				if ((map[heroRow+a][heroCol+c] == Tiles.WALL) && (pickaxe > 0)){
+					map[heroRow+a][heroCol+c] = Tiles.CORRIDOR;
+					pickaxe--;
+					if (pickaxe == 0){
+						announcement = "Your pickaxe breaks on the rock.";
 					}
-				/* Add new pickups, enemies etc here. 
-				} else if () {  */
-				
+				} else if ((map[heroRow+a][heroCol+c] == Tiles.EDGE) && (pickaxe > 0)) {
+					announcement = ("This wall is too hard to break.");
 				} else if (map[heroRow+a][heroCol+c] == Tiles.TRADER){
-					
 					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CORRIDOR){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
-					
-					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CHEST){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
@@ -135,7 +119,8 @@ public class CoreClass
 					int floor = getFloor();
 					int earnedGold = chest.getNewGold(floor);
 					setGold(earnedGold);
-					if (rand.nextInt(4) == 0){
+					announcement = ("You earned: " + earnedGold + " gold.");
+					if (rand.nextInt(3) == 0){
 						setPickaxe();
 					}
 					
@@ -145,12 +130,14 @@ public class CoreClass
 				} else { System.out.println("What did you do...?");
 				} 
 				
-				//entranceMap = getEntranceMap();
-				int entranceRow = entranceMap[0];
-				int entranceCol = entranceMap[1];
-				if (map[entranceRow][entranceCol] == Tiles.CORRIDOR){
+				boolean firstMove = getFirstMove();
+				if (firstMove == true){
+					int entranceRow = heroMap[0];
+					int entranceCol = heroMap[1];
 					map[entranceRow][entranceCol] = Tiles.ENTRANCE;
-				} return map;
+					setFirstMove();
+				}
+				
 			}
 		}catch(Exception e){
 			System.out.println("Waiting...");
@@ -174,6 +161,7 @@ public class CoreClass
 				incrementFloor();
 				System.out.println("Now entering floor " + (floor));
 				System.out.println("It sounds like there are more trolls down here...");
+				resetFirstMove();
 				startGame();
 		}
 		System.out.println ("You made it to floor " + floor);
@@ -182,6 +170,7 @@ public class CoreClass
 		resetTorchStrength();
 		resetGold();
 		resetPickaxe();
+		resetFirstMove();
 		startGame();
 	}
 	
@@ -247,15 +236,18 @@ public class CoreClass
 	
 	// Sets pickaxe value to maximum.(6)
 	public void setPickaxe(){pickaxe = 6;}
-	
-	// Decrements pickaxe value.
-	public void decrementPickaxe(){pickaxe--;}
 		
-	public void setMessage(String currentMessage){message = currentMessage;}
+	public void setMessage(String currentMessage){announcement = currentMessage;}
 	
-	public String getMessage(){return message;}
+	public String getMessage(){return announcement;}
 	
-	public void resetMessage(){message = "blank";}
+	public void resetMessage(){announcement = "blank";}
+	
+	public boolean getFirstMove(){return firstMove;}
+	
+	public void setFirstMove(){firstMove = false;}
+	
+	public void resetFirstMove(){firstMove = true;}
 		
 		
 }
