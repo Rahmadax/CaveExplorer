@@ -22,8 +22,10 @@ public class CoreClass
 	private int floor = 1;
 	private int EXP = 0;
 	private int pickaxe = 2;
+	private int HP = 10;
+	private int maxHP = 10;
 	private String quality;
-	private String announcement;
+	private String announcement = "blank";
 	private String currentMessage;
 	private boolean firstMove = true;
 	
@@ -61,8 +63,11 @@ public class CoreClass
 		int heroCol = heroMap[1];
 		
 		// Information displayed to the player here:
-		System.out.print("Gold: " + getGold() + "   ");
+			// First Line
+		System.out.print("HP: " + getHP() + " / " + getMaxHP() + "   ");
 		System.out.print("EXP: " + getEXP() + "   ");
+		System.out.println("Gold: " + getGold() + "   ");
+			// Second Line
 		System.out.print("Weapon: " + getWeapon() + "   ");
 		pickaxe = getPickaxe();
 		if (pickaxe > 0){
@@ -76,13 +81,16 @@ public class CoreClass
 				quality = "Very Damaged";
 			}
 			System.out.println("Pickaxe: " + quality);
+		} else { 
+			System.out.println("");
 		}
 		announcement = getMessage();
 		if (announcement != "blank"){
-			System.out.println(announcement + "\n");
+			System.out.print(announcement);
 			announcement = "blank";
-		} else {System.out.println("\n");
 		}
+		System.out.println("");
+		System.out.println("");
 		
 		
 		try{
@@ -155,12 +163,9 @@ public class CoreClass
 				System.out.println("You were gobbled up by a troll!");
 				break;
 			case WIN: 
-				System.out.println("You made it to the next floor...");
+				announcement = ("Down to floor " + (floor+1) + "...");
 				resetTorchStrength();
-				System.out.println("Your torch burns low as you move down the stairs");
 				incrementFloor();
-				System.out.println("Now entering floor " + (floor));
-				System.out.println("It sounds like there are more trolls down here...");
 				resetFirstMove();
 				startGame();
 		}
@@ -248,6 +253,9 @@ public class CoreClass
 	public void setFirstMove(){firstMove = false;}
 	
 	public void resetFirstMove(){firstMove = true;}
+	
+	public int getHP(){ return HP;}
 		
+	public int getMaxHP() {return maxHP;}
 		
 }

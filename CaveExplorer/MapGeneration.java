@@ -25,7 +25,7 @@ public class MapGeneration{
 	public Tiles[][] generateMap(){
 		Tiles[][] map = new Tiles[50][50];
 		map = generateBase(map);
-		map = generateRealism(map);
+		//map = generateRealism(map);
 		map = generateExit(map);
 		map = generateMonsters(map);
 		map = generateChests(map);
@@ -47,7 +47,7 @@ public class MapGeneration{
 		
 		for (int i = 0; i < 50; i++) {
 			for (int j = 0; j < 50; j++) {
-				if(i == 0 || j == 0 || i == 1 || j == 1 || i == 48|| j == 48 || i == 49 || j ==49){
+				if(i == 0 || j == 0 || i == 49 || j ==49){
 					map[i][j] = Tiles.EDGE;
 				}
 			}
