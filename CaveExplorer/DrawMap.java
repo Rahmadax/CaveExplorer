@@ -1,11 +1,10 @@
 public class DrawMap
 {
-	final int BASE_CAVE_VIEW_RANGE = 100;
-	final int BASE_OUTSIDE_VIEW_RANGE = 100;
-	private int torchStrength = 0;
+	final int BASE_CAVE_VIEW_RANGE = 4;                                                                                                             
+	private int torchStrength = 100;
 	boolean [][] visited;
 	boolean TorchMode = false;
-	
+		
 	public void setDrawMap(){
 		boolean[][] visited = new boolean[50][50];
 		for(int i = 0; i < 50; i++){

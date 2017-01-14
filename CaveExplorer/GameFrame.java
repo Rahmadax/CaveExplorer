@@ -7,14 +7,14 @@ public class GameFrame {
     private static class HelloWorldDisplay extends JPanel {
         public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			g.drawString( "Hello World!", 100, 30 );
+			g.drawString( "Hello World!", 100, 400 );
 		}
 	}
    
 	private static class ButtonHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(
-             "..is the loneliest number");
+			CoreClass findHero = new CoreClass();
+			findHero.startGame();
 		}
 	}
    
@@ -41,12 +41,12 @@ public class GameFrame {
 		content.add(ButtonPlay);
 		content.add(ButtonGM);
 		content.add(ButtonExit);
-		content.add(new JLabel(new ImageIcon("C:/OllieJava/CaveExplorer/knight.jpg")));
+		content.add(new JLabel(new ImageIcon("C:/CaveExplorer/cave.jpg")));
 
 
 		JFrame window = new JFrame("Cave Explorer");
 		window.setContentPane(content);
-		window.setSize(500,500);
+		window.setSize(1375,850);
 		window.setLocation(100,100);
 		window.setVisible(true);
 
