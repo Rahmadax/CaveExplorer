@@ -115,11 +115,13 @@ public class CoreClass
 					}
 				} else if ((map[heroRow+a][heroCol+c] == Tiles.EDGE) && (pickaxe > 0)) {
 					announcement = ("This wall is too hard to break.");
+	
 				} else if (map[heroRow+a][heroCol+c] == Tiles.TRADER){
-					
+					announcement = ("He wants to trade");
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CORRIDOR){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
+					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CHEST){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
@@ -138,12 +140,11 @@ public class CoreClass
 				} else { System.out.println("What did you do...?");
 				} 
 				
-				boolean firstMove = getFirstMove();
 				if (firstMove == true){
 					int entranceRow = heroMap[0];
 					int entranceCol = heroMap[1];
 					map[entranceRow][entranceCol] = Tiles.ENTRANCE;
-					setFirstMove();
+					firstMove = false;
 				}
 				
 			}
@@ -164,18 +165,29 @@ public class CoreClass
 				break;
 			case WIN: 
 				announcement = ("Down to floor " + (floor+1) + "...");
+				try{
+					System.out.println ("Press any key to play again...");
+					String restart = sc.nextLine();
+					char restart2 = restart.charAt(0);
+				}catch(Exception e){
+				}
 				resetTorchStrength();
 				incrementFloor();
-				resetFirstMove();
+				firstMove = false;
 				startGame();
 		}
 		System.out.println ("You made it to floor " + floor);
+		try{
 		System.out.println ("Press any key to play again...");
+		String restart = sc.nextLine();
+		char restart2 = restart.charAt(0);
+		}catch(Exception e){
+		}
 		resetFloor();	
 		resetTorchStrength();
 		resetGold();
 		resetPickaxe();
-		resetFirstMove();
+		firstMove = false;
 		startGame();
 	}
 	
@@ -248,14 +260,12 @@ public class CoreClass
 	
 	public void resetMessage(){announcement = "blank";}
 	
-	public boolean getFirstMove(){return firstMove;}
-	
-	public void setFirstMove(){firstMove = false;}
-	
-	public void resetFirstMove(){firstMove = true;}
-	
 	public int getHP(){ return HP;}
 		
 	public int getMaxHP() {return maxHP;}
+	
+	public void setBright(){torchStrength = 100;}
+	
+	public void setTorch(){torchStrength = 4;}
 		
 }

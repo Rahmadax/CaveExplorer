@@ -237,9 +237,5 @@ public class MapGeneration{
 	
 	// Returns total number of monsters
 	public int getMonsterTotal(){return monsterTotal;}
-
-	public void setConnectorList(){connectorList = connectorList;}
-	
-	public int[][] getConnectorList(){return connectorList;}
 	
 }

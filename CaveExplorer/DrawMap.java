@@ -1,7 +1,7 @@
 public class DrawMap
 {
 	final int BASE_CAVE_VIEW_RANGE = 4;                                                                                                             
-	private int torchStrength = 100;
+	private int torchStrength = 0;
 	boolean [][] visited;
 	boolean TorchMode = false;
 		

@@ -4,44 +4,60 @@ import javax.swing.*;
 
 public class GameFrame {
    
-    private static class HelloWorldDisplay extends JPanel {
-        public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawString( "Hello World!", 100, 400 );
-		}
-	}
-   
-	private static class ButtonHandler implements ActionListener {
+	private static class ButtonHandlerPlay implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			CoreClass findHero = new CoreClass();
-			findHero.startGame();
+			CoreClass core = new CoreClass();
+			core.startGame();
 		}
 	}
-   
+	
+	private static class ButtonHandlerGM implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	private static class ButtonHandlerOptions implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Options");
+		}
+	}
+	
+	private static class ButtonHandlerExit implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+	}
+
 	public static void main(String[] args) {
       
-		HelloWorldDisplay displayPanel = new HelloWorldDisplay();
 		JButton ButtonPlay = new JButton("Play");
 		JButton ButtonGM = new JButton("Choose Game Mode");
 		JButton ButtonExit = new JButton("Exit");
-		ButtonHandler listener = new ButtonHandler();
+		JButton ButtonOptions = new JButton("Options");
+		ButtonHandlerPlay listenerPlay = new ButtonHandlerPlay();
+		ButtonHandlerExit listenerExit = new ButtonHandlerExit();
+		ButtonHandlerGM listenerGM = new ButtonHandlerGM();
+		ButtonHandlerOptions listenerOptions = new ButtonHandlerOptions();
 		
 		
 		ButtonPlay.setBounds(50,100,300,30);
-		ButtonPlay.addActionListener(listener);
+		ButtonPlay.addActionListener(listenerPlay);
 		ButtonGM.setBounds(50,175,300,30);
-		ButtonGM.addActionListener(listener);
-		ButtonExit.setBounds(50,250,300,30);
-		ButtonExit.addActionListener(listener);
+		ButtonGM.addActionListener(listenerGM);
+		ButtonOptions.setBounds(50,250,300,30);
+		ButtonOptions.addActionListener(listenerOptions);
+		ButtonExit.setBounds(50,325,300,30);
+		ButtonExit.addActionListener(listenerExit);
 	  
 
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
-		content.add(displayPanel, BorderLayout.CENTER);
 		content.add(ButtonPlay);
 		content.add(ButtonGM);
+		content.add(ButtonOptions);
 		content.add(ButtonExit);
-		content.add(new JLabel(new ImageIcon("C:/CaveExplorer/cave.jpg")));
+		content.add(new JLabel(new ImageIcon("U:/CaveExplorer/cave.jpg")));
 
 
 		JFrame window = new JFrame("Cave Explorer");
@@ -51,5 +67,6 @@ public class GameFrame {
 		window.setVisible(true);
 
 	}
+	
    
 }
