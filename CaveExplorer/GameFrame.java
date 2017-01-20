@@ -13,7 +13,8 @@ public class GameFrame {
 	
 	private static class ButtonHandlerGM implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			OptionsFrame GameMode = new OptionsFrame();
+			GameMode.DisplayOptions();
 		}
 	}
 	
@@ -30,6 +31,11 @@ public class GameFrame {
 	}
 
 	public static void main(String[] args) {
+		GameFrame game = new GameFrame();
+		game.displayMenu();
+	}
+		
+	public static void displayMenu(){
       
 		JButton ButtonPlay = new JButton("Play");
 		JButton ButtonGM = new JButton("Choose Game Mode");
@@ -57,10 +63,11 @@ public class GameFrame {
 		content.add(ButtonGM);
 		content.add(ButtonOptions);
 		content.add(ButtonExit);
-		content.add(new JLabel(new ImageIcon("U:/CaveExplorer/cave.jpg")));
+		content.add(new JLabel(new ImageIcon("C:/CaveExplorer/cave.jpg")));
 
-
+		
 		JFrame window = new JFrame("Cave Explorer");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setContentPane(content);
 		window.setSize(1375,850);
 		window.setLocation(100,100);

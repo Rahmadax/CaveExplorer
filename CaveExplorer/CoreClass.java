@@ -47,7 +47,7 @@ public class CoreClass
 		MapGeneration newMap = new MapGeneration();
 		DrawMap draw = new DrawMap();
 		map = newMap.generateMap();
-		draw.setDrawMap();
+		draw.drawMaze(map);
 		while(true){
 			draw.drawMaze(map);
 			getGameplay(map);
@@ -264,8 +264,5 @@ public class CoreClass
 		
 	public int getMaxHP() {return maxHP;}
 	
-	public void setBright(){torchStrength = 100;}
 	
-	public void setTorch(){torchStrength = 4;}
-		
 }
