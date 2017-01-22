@@ -23,14 +23,16 @@ public class MapGeneration{
 		
 	
 	public Tiles[][] generateMap(){
+		CoreClass Core1 = new CoreClass();
 		Tiles[][] map = new Tiles[50][50];
 		map = generateBase(map);
-		//map = generateRealism(map);
+		map = generateRealism(map);
 		map = generateExit(map);
 		map = generateMonsters(map);
 		map = generateChests(map);
 		map = generateTraders(map);
 		map = generateHero(map);
+		map = generateFires(map);
 		return map;
 	}
 	
@@ -92,7 +94,6 @@ public class MapGeneration{
 		int floor = Core1.getFloor();
 		setMonsterTotal(floor);
 		monsterTotal = getMonsterTotal();
-		System.out.println(floor);
 		
 		Tiles[] listMonsters = new Tiles[monsterTotal];
 		if ((floor >= 0) && (floor <= 4)){
@@ -184,17 +185,7 @@ public class MapGeneration{
 		}return map;
 	}
 	
-	public Tiles[][] generateTraders(Tiles[][] map){
-		while(true){
-			int r_Row = rand.nextInt(46)+2;
-			int r_Col = rand.nextInt(46)+2;
-			if((map[r_Row][r_Col] == Tiles.WALL)&&(map[r_Row+1][r_Col] == Tiles.CORRIDOR)){
-				map[r_Row][r_Col] = Tiles.TRADER;
-				return map;
-			}
-		}
-	}
-	
+	// Randomly places the hero
 	public Tiles[][] generateHero(Tiles[][] map){
 	String Spawn = 
 	    ("   "+
@@ -234,6 +225,34 @@ public class MapGeneration{
 			}
 		}
 	}
+	
+	// Randomly places a trader
+	public Tiles[][] generateTraders(Tiles[][] map){
+		while(true){
+			int r_Row = rand.nextInt(46)+2;
+			int r_Col = rand.nextInt(46)+2;
+			if((map[r_Row][r_Col] == Tiles.CORRIDOR)&&(map[r_Row+1][r_Col] == Tiles.CORRIDOR)){
+				map[r_Row][r_Col] = Tiles.TRADER;
+				map[r_Row+1][r_Col] = Tiles.FIRE;
+				return map;
+			}
+		}
+	}
+	
+	// Randomly places the exit.
+	public Tiles[][] generateFires(Tiles[][] map){
+		while(true){
+			for (i = 0; i < 5;){
+				int r_Row = rand.nextInt(46)+2;
+				int r_Col = rand.nextInt(46)+2;
+				if (map[r_Row][r_Col] == Tiles.CORRIDOR){
+					map[r_Row][r_Col] = Tiles.FIRE;
+					i++;
+				}
+			} return map;
+		}
+	}
+	
 	
 	// Returns total number of monsters
 	public int getMonsterTotal(){return monsterTotal;}

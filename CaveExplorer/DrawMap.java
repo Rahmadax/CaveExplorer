@@ -1,6 +1,6 @@
 public class DrawMap
 {
-	final int BASE_CAVE_VIEW_RANGE = 4;                                                                                                             
+	final int BASE_CAVE_VIEW_RANGE = 100;                                                                                                             
 	boolean [][] visited;
 	private int torchStrength;
 	
@@ -32,6 +32,7 @@ public class DrawMap
 						case EXIT :x = x + 'V'; break;
 						case BODY : x = x + 'B'; break;
 						case CHEST : x = x + 'n'; break;
+						case FIRE : x = x + 'x'; break;
 						
 						case TROLL : x = x + 'T'; break;
 						case GOBLIN : x = x + 'g'; break;

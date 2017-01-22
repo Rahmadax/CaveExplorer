@@ -63,11 +63,14 @@ public class CoreClass
 		int heroCol = heroMap[1];
 		
 		// Information displayed to the player here:
-			// First Line
+		// First Line
 		System.out.print("HP: " + getHP() + " / " + getMaxHP() + "   ");
-		System.out.print("EXP: " + getEXP() + "   ");
+		if (HP == 0) {
+			gameOver(Ending.DIED);
+		}
+		System.out.print("EXP: " + EXP + "   ");
 		System.out.println("Gold: " + getGold() + "   ");
-			// Second Line
+		// Second Line
 		System.out.print("Weapon: " + getWeapon() + "   ");
 		pickaxe = getPickaxe();
 		if (pickaxe > 0){
@@ -122,6 +125,10 @@ public class CoreClass
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
 					
+				} else if (map[heroRow+a][heroCol+c] == Tiles.FIRE){
+					HP = HP - 1;
+					announcement = ("Ouch! That burns.");
+					
 				} else if (map[heroRow+a][heroCol+c] == Tiles.CHEST){
 					map[heroRow+a][heroCol+c] = Tiles.HERO;
 					map[heroRow][heroCol] = Tiles.CORRIDOR;
@@ -160,8 +167,8 @@ public class CoreClass
 			case TRAPPED:	
 				System.out.println ("You were Trapped! You are stuck in the cave forever!");
 				break;
-			case EATEN: 
-				System.out.println("You were gobbled up by a troll!");
+			case DIED: 
+				System.out.println("You died!");
 				break;
 			case WIN: 
 				announcement = ("Down to floor " + (floor+1) + "...");
@@ -183,11 +190,12 @@ public class CoreClass
 		char restart2 = restart.charAt(0);
 		}catch(Exception e){
 		}
+		HP = maxHP;
 		resetFloor();	
 		resetTorchStrength();
 		resetGold();
 		resetPickaxe();
-		firstMove = false;
+		firstMove = true;
 		startGame();
 	}
 	
@@ -224,12 +232,6 @@ public class CoreClass
 	// Returns the current floor.
 	public int getFloor(){return floor;}
 	
-	// Returns mapRows.
-	public int getMapRows(){return mapRows;}
-	
-	// Returns mapCols.
-	public int getMapCols(){return mapCols;}
-	
 	// Adds new gold to current gold.
 	public void setGold(int earnedGold){gold = gold + earnedGold;}
 	
@@ -238,9 +240,6 @@ public class CoreClass
 
 	// Resets Gold to 0.
 	public void resetGold(){gold = 0;}
-	
-	// Returns Current EXP.
-	public int getEXP(){return EXP;}
 	
 	// Returns Current Weapon.
 	public String getWeapon(){return weapon;}

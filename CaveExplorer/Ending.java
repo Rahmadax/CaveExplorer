@@ -1,1 +1,1 @@
-public enum Ending{WIN, EATEN, TRAPPED}
+public enum Ending{WIN, DIED, TRAPPED}
