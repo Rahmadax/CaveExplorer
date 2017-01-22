@@ -10,7 +10,6 @@ public class DrawMap
 		int[] heroMap = findHero.getHeroLocation(map);
 		int heroRow = heroMap[0];
 		int heroCol = heroMap[1];
-		System.out.println("strength: " + torchStrength);
 		for (int r=0; r <50; r++){
 			for (int c=0; c<50; c++) {
 				int Vdistance = (heroRow-r);
@@ -33,6 +32,7 @@ public class DrawMap
 						case BODY : x = x + 'B'; break;
 						case CHEST : x = x + 'n'; break;
 						case FIRE : x = x + 'x'; break;
+						case BOX : x = x + 'o'; break;
 						
 						case TROLL : x = x + 'T'; break;
 						case GOBLIN : x = x + 'g'; break;

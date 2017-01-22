@@ -15,24 +15,18 @@ public class CoreClass
 	
 	private Tiles[][] map;
 
-	private char x;
 	private int gold = 0;
-	private int heroRow;
-	private int heroCol;
 	private int floor = 1;
 	private int EXP = 0;
 	private int pickaxe = 2;
 	private int HP = 10;
 	private int maxHP = 10;
-	private String quality;
 	private String announcement = "blank";
 	private String currentMessage;
 	private boolean firstMove = true;
 	
 	private String weapon = "Fists";
 	int torchStrength = 0;
-	int mapCols = 0;
-	int mapRows = 0;
 
 	private int[] entranceMap;
 	public Scanner sc = new Scanner(System.in);
@@ -57,19 +51,21 @@ public class CoreClass
 	
 	// Gets user input (WASD) and returns the updated map.
 	public Tiles[][] getGameplay(Tiles[][] map){
-		
 		int[] heroMap = getHeroLocation(map);
 		int heroRow = heroMap[0];
 		int heroCol = heroMap[1];
+		String quality = "";
 		
 		// Information displayed to the player here:
 		// First Line
 		System.out.print("HP: " + getHP() + " / " + getMaxHP() + "   ");
-		if (HP == 0) {
+		if (getHP() == 0) {
 			gameOver(Ending.DIED);
 		}
 		System.out.print("EXP: " + EXP + "   ");
-		System.out.println("Gold: " + getGold() + "   ");
+		System.out.print("Gold: " + getGold() + "   ");
+		System.out.print("Exit: " + getCompassDirections(map));
+		System.out.print("\n");
 		// Second Line
 		System.out.print("Weapon: " + getWeapon() + "   ");
 		pickaxe = getPickaxe();
@@ -92,8 +88,8 @@ public class CoreClass
 			System.out.print(announcement);
 			announcement = "blank";
 		}
-		System.out.println("");
-		System.out.println("");
+		System.out.print("\n");
+		System.out.print("\n");
 		
 		
 		try{
@@ -110,21 +106,29 @@ public class CoreClass
 				case 's': a =  1; b =  2; break;
 				case 'd': c =  1; d =  2; break;
 				} 
-				if ((map[heroRow+a][heroCol+c] == Tiles.WALL) && (pickaxe > 0)){
+				if (map[heroRow+a][heroCol+c] == Tiles.CORRIDOR){
+					map[heroRow+a][heroCol+c] = Tiles.HERO;
+					map[heroRow][heroCol] = Tiles.CORRIDOR; 
+				
+				} else if (map[heroRow+a][heroCol+c] == Tiles.ENTRANCE){
+					announcement = ("Time to return to the surface?");
+					
+				} else if ((map[heroRow+a][heroCol+c] == Tiles.WALL) && (pickaxe > 0)){
 					map[heroRow+a][heroCol+c] = Tiles.CORRIDOR;
 					pickaxe--;
 					if (pickaxe == 0){
 						announcement = "Your pickaxe breaks on the rock.";
 					}
+					
 				} else if ((map[heroRow+a][heroCol+c] == Tiles.EDGE) && (pickaxe > 0)) {
 					announcement = ("This wall is too hard to break.");
-	
-				} else if (map[heroRow+a][heroCol+c] == Tiles.TRADER){
-					announcement = ("He wants to trade");
-				} else if (map[heroRow+a][heroCol+c] == Tiles.CORRIDOR){
-					map[heroRow+a][heroCol+c] = Tiles.HERO;
-					map[heroRow][heroCol] = Tiles.CORRIDOR;
 					
+				} else if (map[heroRow+a][heroCol+c] == Tiles.BOX) {
+					announcement = ("Hey! Don't touch that!");
+					
+				}else if (map[heroRow+a][heroCol+c] == Tiles.TRADER){
+					announcement = ("He wants to trade");
+	
 				} else if (map[heroRow+a][heroCol+c] == Tiles.FIRE){
 					HP = HP - 1;
 					announcement = ("Ouch! That burns.");
@@ -144,7 +148,6 @@ public class CoreClass
 				} else if (map[heroRow+a][heroCol+c] == Tiles.EXIT){
 					gameOver(Ending.WIN);
 					
-				} else { System.out.println("What did you do...?");
 				} 
 				
 				if (firstMove == true){
@@ -213,6 +216,46 @@ public class CoreClass
 			}
 		} return heroMap;
 	}
+	
+	public int[] getExitLocation(Tiles[][] map){
+		int[] exitMap = new int[2];
+		for (int row = 1; row < 50 - 2; row++){
+			for (int col = 1; col < 50 - 2; col++){
+				if (map[row][col] == Tiles.EXIT){
+					exitMap[0] = row;
+					exitMap[1] = col;
+					return exitMap;
+				} else {
+					continue;
+				}
+			}
+		} return exitMap;
+	}
+	
+	public String getCompassDirections(Tiles[][] map){
+		int[] heroMap = getHeroLocation(map);
+		int[] exitMap = getExitLocation(map);
+		if ((exitMap[0] > heroMap[0]) && (exitMap[1] > heroMap[1])){
+			return "South East";
+		} else if ((exitMap[0] < heroMap[0]) && (exitMap[1] > heroMap[1])) {
+			return "North East";
+		} else if ((exitMap[0] > heroMap[0]) && (exitMap[1] < heroMap[1])){
+			return "South West";
+		} else if ((exitMap[0] < heroMap[0]) && (exitMap[1] < heroMap[1])){
+			return "North West";
+		} else if ((exitMap[0] < heroMap[0]) && (exitMap[1] == heroMap[1])){
+			return "North";
+		} else if ((exitMap[0] > heroMap[0]) && (exitMap[1] == heroMap[1])){
+			return "South";
+		} else if ((exitMap[0] == heroMap[0]) && (exitMap[1] < heroMap[1])){
+			return "West";
+		} else if ((exitMap[0] == heroMap[0]) && (exitMap[1] > heroMap[1])){
+			return "East";
+		} else {
+			return "Error";
+		}
+	}
+		
 	
 	// Retruns torchStrength
 	public int getTorchStrength(){return torchStrength;}

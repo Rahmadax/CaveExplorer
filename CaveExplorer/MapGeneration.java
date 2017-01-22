@@ -30,9 +30,9 @@ public class MapGeneration{
 		map = generateExit(map);
 		map = generateMonsters(map);
 		map = generateChests(map);
+		map = generateFires(map);
 		map = generateTraders(map);
 		map = generateHero(map);
-		map = generateFires(map);
 		return map;
 	}
 	
@@ -232,8 +232,25 @@ public class MapGeneration{
 			int r_Row = rand.nextInt(46)+2;
 			int r_Col = rand.nextInt(46)+2;
 			if((map[r_Row][r_Col] == Tiles.CORRIDOR)&&(map[r_Row+1][r_Col] == Tiles.CORRIDOR)){
+				for (int row = -2; row <= 2; row++){
+					for (int col = -2; col <= 2; col++){
+						map[r_Row+row][r_Col+col] = Tiles.CORRIDOR;
+					}
+				}
 				map[r_Row][r_Col] = Tiles.TRADER;
 				map[r_Row+1][r_Col] = Tiles.FIRE;
+				
+				int box = 0;
+				for (int row = -2; row <= 2; row++){
+					for (int col = -2; col <= 2; col++){
+						int r_Box = rand.nextInt(10);
+						if ((r_Box == 0) && (map[r_Row + row][r_Col + col] == Tiles.CORRIDOR) && (box < 4)){
+							map[r_Row+row][r_Col+col] = Tiles.BOX;
+							box++;
+						}
+					}
+				}
+				
 				return map;
 			}
 		}
