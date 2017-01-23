@@ -40,11 +40,13 @@ public class CoreClass
 	public void startGame(){
 		MapGeneration newMap = new MapGeneration();
 		DrawMap draw = new DrawMap();
+		TraderAI trade = new TraderAI();
 		map = newMap.generateMap();
 		draw.drawMaze(map);
 		while(true){
 			draw.drawMaze(map);
 			getGameplay(map);
+			trade.moveTrader(map);
 		}
 	}
 	

@@ -32,6 +32,7 @@ public class DrawMap
 						case BODY : x = x + 'B'; break;
 						case CHEST : x = x + 'n'; break;
 						case FIRE : x = x + 'x'; break;
+						case TRADERFIRE : x = x +'x'; break;
 						case BOX : x = x + 'o'; break;
 						
 						case TROLL : x = x + 'T'; break;

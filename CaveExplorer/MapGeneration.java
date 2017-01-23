@@ -229,8 +229,8 @@ public class MapGeneration{
 	// Randomly places a trader
 	public Tiles[][] generateTraders(Tiles[][] map){
 		while(true){
-			int r_Row = rand.nextInt(46)+2;
-			int r_Col = rand.nextInt(46)+2;
+			int r_Row = rand.nextInt(40)+5;
+			int r_Col = rand.nextInt(40)+5;
 			if((map[r_Row][r_Col] == Tiles.CORRIDOR)&&(map[r_Row+1][r_Col] == Tiles.CORRIDOR)){
 				for (int row = -2; row <= 2; row++){
 					for (int col = -2; col <= 2; col++){
@@ -238,13 +238,13 @@ public class MapGeneration{
 					}
 				}
 				map[r_Row][r_Col] = Tiles.TRADER;
-				map[r_Row+1][r_Col] = Tiles.FIRE;
+				map[r_Row+1][r_Col] = Tiles.TRADERFIRE;
 				
 				int box = 0;
 				for (int row = -2; row <= 2; row++){
 					for (int col = -2; col <= 2; col++){
 						int r_Box = rand.nextInt(10);
-						if ((r_Box == 0) && (map[r_Row + row][r_Col + col] == Tiles.CORRIDOR) && (box < 4)){
+						if ((r_Box == 0) && (map[r_Row + row][r_Col + col] == Tiles.CORRIDOR) && (box < 3)){
 							map[r_Row+row][r_Col+col] = Tiles.BOX;
 							box++;
 						}
