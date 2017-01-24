@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 /*
 	Calls on:
 		map 
@@ -241,9 +242,9 @@ public class MapGeneration{
 				map[r_Row+1][r_Col] = Tiles.TRADERFIRE;
 				
 				int box = 0;
-				for (int row = -2; row <= 2; row++){
-					for (int col = -2; col <= 2; col++){
-						int r_Box = rand.nextInt(10);
+				for (int row = -1; row <= 1; row++){
+					for (int col = -1; col <= 1; col++){
+						int r_Box = rand.nextInt(7);
 						if ((r_Box == 0) && (map[r_Row + row][r_Col + col] == Tiles.CORRIDOR) && (box < 3)){
 							map[r_Row+row][r_Col+col] = Tiles.BOX;
 							box++;

@@ -6,6 +6,9 @@ import java.awt.Color;
 import sheffield.*;
 import java.io.Console;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.io.*;
 
 // Primary class. 
 
@@ -24,6 +27,8 @@ public class CoreClass
 	private String announcement = "blank";
 	private String currentMessage;
 	private boolean firstMove = true;
+	private int tickCounter = 0;
+	private char direction = ' ';
 	
 	private String weapon = "Fists";
 	int torchStrength = 0;
@@ -50,6 +55,36 @@ public class CoreClass
 		}
 	}
 	
+	
+	TimerTask task = new TimerTask() {
+        public void run()
+        {
+            if( tickCounter == 5 )
+            {
+                System.out.println( "you input nothing. exit..." );
+                System.exit( 0 );
+            }
+        }    
+    };
+	
+	public char getInput() throws Exception
+    {
+        Timer timer = new Timer();
+        timer.schedule( task, 3*1000 );
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader( System.in ) );
+        String userInput = in.readLine();
+		char direction = userInput.charAt(0);
+        timer.cancel();
+		if (direction == 'w'){
+			return direction;
+		} else if (tickCounter == 5) {
+			System.out.println("HERE!!!!!");
+		} else {
+			tickCounter++;
+		} return (' ');
+    }
+
 	
 	// Gets user input (WASD) and returns the updated map.
 	public Tiles[][] getGameplay(Tiles[][] map){
@@ -96,8 +131,9 @@ public class CoreClass
 		
 		try{
 			System.out.print("(W = up / A = left / S = Down / D = Right)" + '\n' + "What direction do you want to move: ");
-		    String userInput = sc.nextLine();
-			char direction = userInput.charAt(0);
+			do{
+				direction = getInput();
+			} while (direction != ' ');
 			if (direction == 'q'){
 				gameOver(Ending.TRAPPED);
 			} else if ((direction == 'w') || (direction == 'a') || (direction == 's') || (direction == 'd')){
